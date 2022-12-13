@@ -42,7 +42,7 @@ def get_electricity_price():
         cnx.commit()
         response = cur.fetchall()
 
-        return f'{round(response[0][1],2)} kr/kWh'
+        return f'{round(response[0][1],2)}'
     except Exception as e:
         print(e)
 
@@ -76,7 +76,7 @@ def get_radiator(in_value):
 
     try:
         cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
-        qry.append(f'SELECT temp.created, value/10, u.name from temp')
+        qry.append(f'SELECT temp.created, value, u.name from temp')
         qry.append(f'inner join temp_linker as u on u.link_id = mbus')
         qry.append(f'where temp.name = (select link_id from temp_linker where name = "{in_value}")')
         qry.append(f'order by temp.created desc limit 1')
@@ -87,26 +87,24 @@ def get_radiator(in_value):
         cnx.commit()
         response = cur.fetchall()
 
-        return f"{response[0][1]} {response[0][2]}"
+        return f"{response[0][1]}"
     except Exception as e:
         print(e)
 
-def get_pump_speed(in_value):
+def get_citat():
     qry = []
 
     try:
         cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
-        qry.append(f'SELECT temp.created, value/10, u.name from temp')
-        qry.append(f'inner join temp_linker as u on u.link_id = mbus')
-        qry.append(f'where temp.name = (select link_id from temp_linker where name = "{in_value}")')
-        qry.append(f'order by temp.created desc limit 1')
+        qry.append(f'SELECT citatet from citat order by RAND() limit 1')
         q = " ".join(qry)
         print(q)
         cur = cnx.cursor()
         cur.execute(q)
         cnx.commit()
         response = cur.fetchall()
-
-        return f"{response[0][1]} {response[0][2]}"
+        print(response[0][0])
+        return f"{response[0][0]}"
     except Exception as e:
         print(e)
+

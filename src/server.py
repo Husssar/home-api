@@ -53,12 +53,18 @@ def added_power():
 def radiator():
     out_rad = backend_db_call.get_radiator('condenser return')
     in_rad = backend_db_call.get_radiator('heat medium flow')
-    pump_speed = 55
+    pump_speed = backend_db_call.get_radiator('pump speed heating medium')
     return jsonify({"heat_out": out_rad,
                     "heat_in": in_rad,
                     "pump_speed": pump_speed})
 
+@app.route('/citat/', methods=['GET'])
+def citat():
+    citatet = backend_db_call.get_citat()
+
+    return jsonify({"citat": citatet })
+
 
 # driver function
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(host='0.0.0.0', debug = True)
