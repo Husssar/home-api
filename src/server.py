@@ -11,7 +11,7 @@ CORS(app)
 # returns the data that we send when we use POST.
 @app.route('/', methods = ['GET', 'POST'])
 def home():
-    return render_template('index.html')
+    return jsonify({'welcome': 1337})
 
 # A simple function to calculate the square of a number
 # the number to be squared is sent in the URL when we use GET
