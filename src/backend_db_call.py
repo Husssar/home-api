@@ -9,10 +9,12 @@ def get_temperature(meter_id, medium_type):
 
     try:
         cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
-        qry.append(f'SELECT temp.created, value from temp')
-        qry.append(f'where name = (select link_id from temp_linker where name = "{meter_id}")')
-        qry.append(f'and mbus= (select link_id from temp_linker where name = "{medium_type}")')
-        qry.append(f'order by created desc limit 1')
+        qry.append('SELECT temp_latest.updated, temp_latest.value, unit.name  FROM temp_latest')
+        qry.append('inner join temp_linker on temp_linker.link_id = temp_latest.name_id')
+        qry.append('inner join temp_linker as unit on unit.link_id = temp_latest.unit')
+        qry.append(f'where temp_latest.name_id = (select link_id from temp_linker where name = "{meter_id}")')
+        qry.append(f'and temp_latest.unit = (select link_id from temp_linker where name = "{medium_type}")')
+
         q = " ".join(qry)
         print(q)
         cur = cnx.cursor()

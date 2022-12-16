@@ -11,7 +11,7 @@ CORS(app)
 # returns the data that we send when we use POST.
 @app.route('/', methods = ['GET', 'POST'])
 def home():
-    return render_template('index.html')
+    return jsonify({'welcome': 1337})
 
 
 @app.route('/home/<int:num>', methods = ['GET'])
