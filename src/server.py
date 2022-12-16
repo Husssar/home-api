@@ -13,11 +13,6 @@ CORS(app)
 def home():
     return render_template('index.html')
 
-# A simple function to calculate the square of a number
-# the number to be squared is sent in the URL when we use GET
-# on the terminal type: curl http://127.0.0.1:5000 / home / 10
-# this returns 100 (square of 10)
-
 
 @app.route('/home/<int:num>', methods = ['GET'])
 def disp(num):
@@ -39,7 +34,7 @@ def electricity():
 @app.route('/electricity/consuming/', methods = ['GET'])
 def consuming():
     response = backend_db_call.get_electricity_consuming()
-    return jsonify({"consuming": response})
+    return jsonify(response)
 
 
 @app.route('/electricity/added_power/', methods = ['GET'])
