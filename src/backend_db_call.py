@@ -1,6 +1,7 @@
 
 import cred
 import pymysql
+from datetime import datetime, timedelta
 
 
 
@@ -29,21 +30,54 @@ def get_temperature(meter_id, medium_type):
 
 def get_electricity_price():
     qry = []
+    now = datetime.now()
+    time_now = (now - timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")
+    tomorrow = (now + timedelta(1)).strftime("%Y-%m-%d 23:59:59")
+
+    print(time_now)
+    print(tomorrow)
 
     try:
         cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
-        qry.append(f'SELECT temp.created, value/100000 from temp')
-        qry.append(f'where name = (select link_id from temp_linker where name = "price of electricity")')
-        qry.append(f'and mbus= (select link_id from temp_linker where name = "öre/kWh")')
-        qry.append(f'order by created desc limit 1')
-        q = " ".join(qry)
-        print(q)
+        qry = f"SELECT when_price, totalprice FROM `grid_cost` " \
+              f"where when_price > \"{time_now}\" and when_price < \"{tomorrow}\""
+
         cur = cnx.cursor()
-        cur.execute(q)
+        cur.execute(qry)
+        cnx.commit()
+        response = cur.fetchall()
+        print(response)
+        resp = {}
+        i = 0
+        for d in response:
+            resp[i] = {"time": str(d[0]), "price": d[1]}
+            i += 1
+
+
+        return resp
+    except Exception as e:
+        print(e)
+
+
+def get_electricity_price_now():
+    qry = []
+    now = datetime.now()
+    time_now = now.strftime("%Y-%m-%d %H:%M:%S")
+    time_then = (now - timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S")
+
+    try:
+        cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
+        qry = f"SELECT when_price, totalprice FROM `grid_cost` " \
+              f"where when_price >= \"{time_then}\" and when_price <= \"{time_now}\""
+
+        cur = cnx.cursor()
+        cur.execute(qry)
         cnx.commit()
         response = cur.fetchall()
 
-        return f'{round(response[0][1],2)}'
+        resp = {"time": str(response[0][0]), "price": response[0][1]}
+
+        return resp
     except Exception as e:
         print(e)
 
