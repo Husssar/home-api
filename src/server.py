@@ -28,16 +28,21 @@ def temperature(num, value):
 @app.route('/electricity/price', methods = ['GET'])
 def electricity():
     response = backend_db_call.get_electricity_price()
-    return jsonify({"price": response})
+    return jsonify(response)
+
+@app.route('/electricity/now', methods = ['GET'])
+def price_now():
+    response = backend_db_call.get_electricity_price_now()
+    return jsonify(response)
 
 
-@app.route('/electricity/consuming/', methods = ['GET'])
+@app.route('/electricity/consuming', methods = ['GET'])
 def consuming():
     response = backend_db_call.get_electricity_consuming()
     return jsonify(response)
 
 
-@app.route('/electricity/added_power/', methods = ['GET'])
+@app.route('/electricity/added_power', methods = ['GET'])
 def added_power():
     response = backend_db_call.get_electricity_added_power()
     return jsonify({"added_power": response})
