@@ -41,6 +41,11 @@ def consuming():
     response = backend_db_call.get_electricity_consuming()
     return jsonify(response)
 
+@app.route('/electricity/consumed', methods = ['GET'])
+def consumed():
+    response = backend_db_call.get_electricity_consumed()
+    return jsonify(response)
+
 
 @app.route('/electricity/added_power', methods = ['GET'])
 def added_power():

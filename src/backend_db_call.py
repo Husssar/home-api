@@ -31,7 +31,7 @@ def get_temperature(meter_id, medium_type):
 def get_electricity_price():
     qry = []
     now = datetime.now()
-    time_now = (now - timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")
+    time_now = (now - timedelta(days=2)).strftime("%Y-%m-%d 23:00:00")
     tomorrow = (now + timedelta(1)).strftime("%Y-%m-%d 23:59:59")
 
     print(time_now)
@@ -41,7 +41,7 @@ def get_electricity_price():
         cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
         qry = f"SELECT when_price, totalprice FROM `grid_cost` " \
               f"where when_price > \"{time_now}\" and when_price < \"{tomorrow}\""
-
+        print(qry)
         cur = cnx.cursor()
         cur.execute(qry)
         cnx.commit()
@@ -81,6 +81,43 @@ def get_electricity_price_now():
     except Exception as e:
         print(e)
 
+
+def get_electricity_consumed():
+    qry = []
+
+    try:
+        now = datetime.now()
+        time_then = now.strftime("%Y-%m-%d %H:%M:%S")
+        time_back = (now - timedelta(days=2)).strftime("%Y-%m-%d 23:00:00")
+
+        cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
+
+        qry.append(f"SELECT day(date), hour(date), min(value) FROM grid_data_consuming_latest_48h where date >= '{time_back}' and date < '{time_then}' GROUP by day(date), hour(date)")
+
+
+        q = " ".join(qry)
+        print(q)
+        cur = cnx.cursor()
+        cur.execute(q)
+        cnx.commit()
+        response = cur.fetchall()
+        print(response)
+        consumed = []
+        latest = 0
+        for value in response:
+
+            if latest == 0:
+                consumed.append(0)
+            else:
+                consumed.append(value[2] - latest)
+
+            latest = value[2]
+
+        consumed = [0, 0.944999999999709, 1.977999999999156, 1.8299999999981083, 1.7960000000020955, 1.6640000000006694, 1.988999999997759, 2.105999999999767, 1.2530000000006112, 1.7299999999995634, 1.934000000001106, 1.830999999998312, 1.3440000000009604, 1.162000000000262, 1.1779999999998836, 1.401000000001659, 1.433999999997468, 1.2590000000018335, 1.2119999999995343, 1.5799999999981083, 1.7970000000022992, 1.3739999999997963, 1.4199999999982538, 1.2080000000023574, 1.5010000000002037, 1.2160000000003492, 1.7889999999970314, 1.7470000000030268, 1.7769999999982247, 2.1860000000015134, 2.1630000000004657, 2.0639999999984866, 1.319999999999709, 2.596000000001368, 2.077999999997701, 1.4599999999991269, 1.272000000000844]
+        print(consumed)
+        return consumed
+    except Exception as e:
+        print(e)
 def get_electricity_consuming():
     qry = []
 
