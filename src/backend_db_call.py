@@ -27,11 +27,12 @@ def get_temperature(meter_id, medium_type):
     except Exception as e:
         print(e)
 
-
+def get_date():
+    now = datetime.now()
 def get_electricity_price():
     qry = []
     now = datetime.now()
-    time_now = (now - timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")
+    time_now = (now - timedelta(days=2)).strftime("%Y-%m-%d 23:00:00")
     tomorrow = (now + timedelta(1)).strftime("%Y-%m-%d 23:59:59")
 
     print(time_now)
@@ -41,7 +42,7 @@ def get_electricity_price():
         cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
         qry = f"SELECT when_price, totalprice FROM `grid_cost` " \
               f"where when_price > \"{time_now}\" and when_price < \"{tomorrow}\""
-
+        print(qry)
         cur = cnx.cursor()
         cur.execute(qry)
         cnx.commit()
@@ -69,7 +70,7 @@ def get_electricity_price_now():
         cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
         qry = f"SELECT when_price, totalprice FROM `grid_cost` " \
               f"where when_price >= \"{time_then}\" and when_price <= \"{time_now}\""
-
+        print(qry)
         cur = cnx.cursor()
         cur.execute(qry)
         cnx.commit()
@@ -81,6 +82,40 @@ def get_electricity_price_now():
     except Exception as e:
         print(e)
 
+
+def get_electricity_consumed():
+    qry = []
+
+    try:
+        now = datetime.now()
+        time_then = now.strftime("%Y-%m-%d %H:%M:%S")
+        time_back = (now - timedelta(days=2)).strftime("%Y-%m-%d 23:00:00")
+
+        cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
+
+        qry.append(f"SELECT * FROM `grid_data_consuming_latest_48h` as a inner join ( select date(created) as t_date, min(created) as t_min from grid_data_consuming_latest_48h GROUP BY date(created), hour(created) ) as t on t.t_min = a.created where created >= '{time_back}' and created < '{time_then}'")
+
+
+        q = " ".join(qry)
+        print(q)
+        cur = cnx.cursor()
+        cur.execute(q)
+        cnx.commit()
+        response = cur.fetchall()
+        print(response)
+        consumed = []
+        latest = 0
+        resp = {}
+        i = 0
+        for d in response:
+            resp[i] = {"time": d[1], "energy": d[2]}
+            i += 1
+
+        print(resp)
+
+        return resp
+    except Exception as e:
+        print(e)
 def get_electricity_consuming():
     qry = []
 
