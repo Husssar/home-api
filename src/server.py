@@ -1,10 +1,14 @@
 # Using flask to make an api
 # import necessary libraries and functions
+import os.path
+from datetime import datetime
+
 from flask import Flask, jsonify, request, render_template
 import backend_db_call
 from flask_cors import CORS
 # creating a Flask app
 app = Flask(__name__)
+img = os.path.join('static', 'images')
 CORS(app)
 # on the terminal type: curl http://127.0.0.1:5000/
 # returns hello world when we use GET.
@@ -23,6 +27,40 @@ def disp(num):
 def temperature(num, value):
     temp = backend_db_call.get_temperature(num, value)
     return jsonify({"temperature": temp})
+
+@app.route('/date/', methods= ['GET'])
+def get_date():
+    now = datetime.now()
+
+    return {
+        "now": str(now),
+        "now_date_time": now.strftime("%Y-%m-%d %H:%M:%S"),
+        "now_date_time2": now.strftime("%Y-%m-%d %H:%M"),
+        "now_time": now.strftime("%H:%M"),
+        "now_time2": now.strftime("%H:%M:%S"),
+        "now_date": now.strftime("%Y-%m-%d"),
+        "now_date_text": now.strftime("%A %d %B"),
+        "now_week": now.strftime("%W")
+    }
+
+
+@app.route('/electricity/graf', methods = ['POST'])
+def upload():
+    if not os.path.exists('images'):
+        os.mkdir('images')
+
+    f = request.files['file']
+    f.save('static/images/' + f.filename)
+    return jsonify({'STATUS': 'File uploaded'})
+
+
+@app.route('/images')
+def show_images():
+    file = os.path.join(img, 'test.png')
+    print(file)
+    return render_template("images.html", image=file)
+
+
 
 
 @app.route('/electricity/price', methods = ['GET'])
