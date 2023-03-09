@@ -46,8 +46,10 @@ def get_date():
 
 @app.route('/electricity/graf', methods = ['POST'])
 def upload():
-    if not os.path.exists('images'):
-        os.mkdir('images')
+    if not os.path.exists('static'):
+        os.mkdir('static')
+    if not os.path.exists('static/images'):
+        os.mkdir('static/images')
 
     f = request.files['file']
     f.save('static/images/' + f.filename)
