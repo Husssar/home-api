@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css.css">
+    <meta charset="UTF-8">
+    <title>ShowData</title>
+    <script>
+        // const URL = 'http://127.0.0.1:8889/temp/61002076/ext-temp';
+        const URL = 'http://127.0.0.1:5000/temperature/61002076/ext-temp';
+
+        async function makeInsideAPICall() {
+            while (true ){
+            const response = await fetch(URL)
+
+           // console.log(response)
+            response.json().then(data => {
+                console.log(data)
+               const temp = data;
+               console.log(temp.temperature)
+               document.getElementById("inside").innerHTML = temp.temperature;
+            })
+            await sleep(1000*10)
+        }
+        }
+        makeInsideAPICall()
+
+
+        const URL_outside = 'http://127.0.0.1:5000/temperature/25002309/ext-temp';
+
+        async function makeOutsideAPICall() {
+            while (true ){
+            const response = await fetch(URL_outside);
+            // console.log(response)
+            response.json().then(data => {
+                console.log(data)
+                const temp = data;
+                console.log(temp.temperature)
+                document.getElementById("outside").innerHTML = temp.temperature;
+            })
+            await sleep(1000*10)
+        }
+        }
+        makeOutsideAPICall()
+
+        const URL_price = 'http://127.0.0.1:5000/electricity/price';
+
+        async function makePriceAPICall() {
+            while (true ){
+
+            const response = await fetch(URL_price);
+            // console.log(response)
+            response.json().then(data => {
+                console.log(data)
+                const price = data;
+                console.log(price.price)
+                document.getElementById("price").innerHTML = price.price;
+            })
+            await sleep(1000*60)
+        }
+        }
+        makePriceAPICall()
+
+        const URL_consuming = 'http://127.0.0.1:5000/electricity/consuming';
+
+        async function makeConsumingAPICall() {
+            while (true ){
+            const response = await fetch(URL_consuming);
+            // console.log(response)
+            response.json().then(data => {
+                console.log(data)
+                const temp = data;
+                console.log(temp.consuming)
+                document.getElementById("consuming").innerHTML = temp.consuming;
+            })
+                await sleep(1000*5)
+            }
+        }
+        makeConsumingAPICall()
+
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms))
+        }
+        //setInterval(makeConsumingAPICall, 500)
+
+
+    </script>
+</head>
+<body>
+<table style width="100%">
+    <tr><td><h1>Home is always at home</h1></td></tr>
+</table>
+<table style width="100%">
+    <tr>
+        <td><h3>Inomhus <div id="inside">...</div></h3></td>
+        <td><h3>Utomhus <div id="outside">...</div></h3></td>
+        <td><h3>Elpris <div id="price">...</div></h3></td>
+        <td><h3>Strömförbrukning <div id="consuming">...</div></h3></td>
+
+    </tr>
+</table>
+
+
+</body>
+</html>
+
+
