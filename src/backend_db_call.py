@@ -34,7 +34,7 @@ def get_schedule():
 
     try:
         cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
-        qry = f"SELECT who, whereat, dayat, timeat from schedules"
+        qry = f"SELECT who, whereat, schedules_linker.value, timeat from schedules inner join schedules_linker on schedules.dayat = schedules_linker.valueId order by schedules_linker.valueId"
         print(qry)
         cur = cnx.cursor()
         cur.execute(qry)
