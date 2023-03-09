@@ -46,16 +46,22 @@ def get_date():
 
 @app.route('/electricity/graf', methods = ['POST'])
 def upload():
-    if not os.path.exists('static'):
+    path = os.getcwd()
+    static_folder = f'{path}/static'
+    images_folder = f'{static_folder}/images'
+    if not os.path.exists(static_folder):
         print("static folder doesn't exist'")
-        os.mkdir('static')
-    if not os.path.exists('static/images'):
+        os.mkdir(static_folder)
+        print(f'static folder created in {static_folder}')
+    if not os.path.exists(images_folder):
         print("static/images folder doesn't exist'")
-        os.mkdir('static/images')
+        os.mkdir(images_folder)
+        print(f'images folder created in {images_folder}')
 
     f = request.files['file']
-    f.save('static/images/' + f.filename)
-    print(os.listdir('static/images/'))
+
+    f.save(f'{images_folder}/' + f.filename)
+    print(os.listdir(images_folder))
     return jsonify({'STATUS': 'File uploaded'})
 
 
