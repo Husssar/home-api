@@ -47,8 +47,11 @@ def get_date():
 @app.route('/electricity/graf', methods = ['POST'])
 def upload():
     path = os.getcwd()
-    static_folder = f'src{path}/static'
+    static_folder = f'{path}/static'
+    print(static_folder)
     images_folder = f'{static_folder}/images'
+    print(images_folder)
+
     if not os.path.exists(static_folder):
         print("static folder doesn't exist'")
         os.mkdir(static_folder)
