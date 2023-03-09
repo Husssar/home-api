@@ -29,6 +29,29 @@ def get_temperature(meter_id, medium_type):
 
 def get_date():
     now = datetime.now()
+def get_schedule():
+    qry = []
+
+    try:
+        cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
+        qry = f"SELECT who, whereat, dayat, timeat from schedules"
+        print(qry)
+        cur = cnx.cursor()
+        cur.execute(qry)
+        cnx.commit()
+        response = cur.fetchall()
+        print(response)
+        resp = {}
+        i = 0
+        for d in response:
+            print(d)
+            resp[i] = {"who": str(d[0]), "where": d[1], "day": d[2], "time": d[3]}
+            i += 1
+        print(resp)
+        return resp
+    except Exception as e:
+        print(e)
+
 def get_electricity_price():
     qry = []
     now = datetime.now()
@@ -42,20 +65,21 @@ def get_electricity_price():
         cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
         qry = f"SELECT when_price, totalprice FROM `grid_cost` " \
               f"where when_price > \"{time_now}\" and when_price < \"{tomorrow}\""
+
         print(qry)
         cur = cnx.cursor()
         cur.execute(qry)
         cnx.commit()
         response = cur.fetchall()
-        print(response)
         resp = {}
         i = 0
+
         for d in response:
             resp[i] = {"time": str(d[0]), "price": d[1]}
             i += 1
 
-
         return resp
+
     except Exception as e:
         print(e)
 
