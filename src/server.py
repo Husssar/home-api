@@ -60,7 +60,10 @@ def show_images():
     print(file)
     return render_template("images.html", image=file)
 
-
+@app.route('/schedule', methods = ['GET'])
+def schedules():
+    response = backend_db_call.get_schedule()
+    return jsonify(response)
 
 
 @app.route('/electricity/price', methods = ['GET'])
