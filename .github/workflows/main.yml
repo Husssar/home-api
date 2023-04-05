@@ -11,7 +11,7 @@ jobs:
       - run: echo DATABASE=\"${{ vars.HOME_API_SQL_DB }}\" > src/cred.py
       - run: echo SQL_UW=\"${{ vars.HOME_API_SQL_USER }}\" >> src/cred.py
       - run: echo HOST=\"${{ vars.HOME_API_SQL_HOST }}\" >> src/cred.py
-      - run: echo PASSWORD=\"$SECRET\" >> src/cred.py
+      - run: echo IPASSWORD=$SECRET >> src/cred.py
       - run: cat src/cred.py
       - name: List files in the repository
         run: |
