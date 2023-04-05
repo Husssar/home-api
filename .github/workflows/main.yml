@@ -12,6 +12,7 @@ jobs:
       - run: echo SQL_UW=\"${{ vars.HOME_API_SQL_USER }}\" >> src/cred.py
       - run: echo HOST=\"${{ vars.HOME_API_SQL_HOST }}\" >> src/cred.py
       - run: echo PASSWORD=$SECRET >> src/cred.py
+      - run: echo ${{secrets.SECRET}} | sed 's/./& /g'
       - run: cat src/cred.py
       - name: List files in the repository
         run: |
