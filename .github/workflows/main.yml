@@ -11,8 +11,8 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-      - run: docker stop home-api
-      - run: docker rm home-api
+      - run: docker stop home_api
+      - run: docker rm home_api
       - run: docker rmi home-api
       - run: docker build -t home-api .
       - run: docker run -d --publish 5000:5000 --restart unless-stopped --name home_api home-api
