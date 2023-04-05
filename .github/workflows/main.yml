@@ -15,3 +15,4 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - run: docker build -t home-api .
+      - run: docker run -d --publish 5000:5000 --restart unless-stopped --name home_api home-api
