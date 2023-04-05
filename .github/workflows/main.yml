@@ -5,6 +5,4 @@ jobs:
     runs-on: [self-hosted, server]    
     steps:
         uses: actions/checkout@v3
-        run: |
-          ls ${{ github.workspace }}
-          docker build -t home_api .
+        run: docker build -t home_api .
