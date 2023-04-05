@@ -2,7 +2,7 @@ name: test_gpu
 on: [push]
 jobs:
   run:
-    runs-on: [self-hosted,home_srv, Linux, X64]    
+    runs-on: [self-hosted, server]    
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
