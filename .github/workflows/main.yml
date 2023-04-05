@@ -5,8 +5,9 @@ jobs:
     runs-on: [self-hosted, server]    
     steps:
       - name: Check out repository cod2e
-        with:
+        env:
           SECRET: ${{ secrets.HOME_API_SQL_PASSWORD }}
+          run: echo $SECRET
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: echo DATABASE=\"${{ vars.HOME_API_SQL_DB }}\" > src/cred.py
