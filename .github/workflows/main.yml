@@ -5,7 +5,7 @@ jobs:
     runs-on: [self-hosted, server]    
     steps:
       env:
-        SECRET: {{ secrets.HOME_API_SQL_PASSWORD }}
+        SECRET: ${{ secrets.HOME_API_SQL_PASSWORD }}
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: echo DATABASE=\"${{ vars.HOME_API_SQL_DB }}\" > src/cred.py
