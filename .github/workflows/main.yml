@@ -1,0 +1,8 @@
+name: gogogogo
+on: [push]
+jobs:
+  run:
+    runs-on: [self-hosted,home_srv]    
+    steps:    
+      run: |     
+        echo "Testing"
