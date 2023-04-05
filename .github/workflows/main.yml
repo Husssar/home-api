@@ -2,10 +2,9 @@ name: test_gpu
 on: [push]
 jobs:
   run:
-    runs-on: [self-hosted,home_srv,gpu]    
+    runs-on: [self-hosted,home_srv, Linux, X64]    
     steps:
     - uses: iterative/setup-cml@v1
-    - name: cml_run
-      
+    - name: cml_run      
       run: |     
         echo "hello"
