@@ -8,7 +8,7 @@ jobs:
         uses: actions/checkout@v3
         env:
           SECRET: ${{ secrets.HOME_API_SQL_PASSWORD }}
-      - run: ./gen_cred ${{ vars.HOME_API_SQL_DB }} ${{ vars.HOME_API_SQL_USER }} ${{ vars.HOME_API_SQL_HOST }} ${{secrets.HOME_API_SQL_PASSWORD}}
+      - run: ./gen_cred.sh ${{ vars.HOME_API_SQL_DB }} ${{ vars.HOME_API_SQL_USER }} ${{ vars.HOME_API_SQL_HOST }} ${{secrets.HOME_API_SQL_PASSWORD}}
       - run: cat src/cred.py
       - name: List files in the repository
         run: |
