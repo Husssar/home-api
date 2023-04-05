@@ -4,6 +4,7 @@ jobs:
   run:
     runs-on: [self-hosted, server]    
     steps:
+      - run: echo ${{ env.HOME_API_SQL_DB }}
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - name: Check out repository code
         uses: actions/checkout@v3
