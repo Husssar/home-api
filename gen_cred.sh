@@ -1,7 +1,7 @@
 DB="DATABASE='$1'"
-USER="SQL_UW='$2'"
+USER="USER_SQL='$2'"
 HOST="HOST='$3'"
-PW="PASSWORD='$4'"
+PW="PASSWORD_SQL='$4'"
 
 
 echo $DB > src/cred.py
