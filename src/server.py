@@ -30,8 +30,8 @@ def temperature(num, value):
 
 @app.route('/date/', methods= ['GET'])
 def get_date():
-    now = datetime.now()
-
+    now = datetime.now(tz=pytz.timezone('Europe/Stockholm'))
+    
     return {
         "now": str(now),
         "now_date_time": now.strftime("%Y-%m-%d %H:%M:%S"),
