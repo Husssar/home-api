@@ -1,6 +1,7 @@
 name: test
 on: [push]
 jobs:
+  name: test job1
   job1:
     run:
       runs-on: [self-hosted, server]
@@ -8,6 +9,7 @@ jobs:
       - name: heck out repository code
       - run: |
           echo job1
+  name: test job2
   job2:
     needs: job1
     run:
