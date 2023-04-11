@@ -1,4 +1,4 @@
-name: The-order
+name: main
 on: [push]
 
 jobs:
