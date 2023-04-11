@@ -10,13 +10,13 @@ jobs:
     - name: Stopping containers
       run: |
         docker ps -a
-        #    docker stop home_api
-        #docker rm home_api
-        #docker rmi home_api
+            docker stop home_api
+        docker rm home_api
+        docker rmi home_api
 
   job2:
     name: Welding container
-    #    needs: job1
+        needs: job1
     runs-on: [self-hosted, server]
 
     steps:
