@@ -10,16 +10,10 @@ jobs:
     - name: Stopping containers
       run: |
         docker ps -a
-            docker stop home_api
+        docker stop home_api
         docker rm home_api
         docker rmi home_api
 
-  job2:
-    name: Welding container
-    needs: job1
-    runs-on: [self-hosted, server]
-
-    steps:
     - name: Assembling parts
       uses: actions/checkout@v3
     - run: ./gen_cred.sh ${{ vars.HOME_API_SQL_DB }} ${{ vars.HOME_API_SQL_USER }} ${{ vars.HOME_API_SQL_HOST }} ${{secrets.HOME_API_SQL_PASSWORD}}
@@ -27,9 +21,9 @@ jobs:
       run: |
         docker build -t home-api .
 
-  job3:
+  job2:
     name: Starting container
-    needs: job2
+    needs: job1
     runs-on: [self-hosted, server]
 
     steps:
@@ -37,9 +31,9 @@ jobs:
       run: |
         docker run -d --publish 5000:5000 --restart unless-stopped --name home_api home-api
 
-  job4:
+  job3:
     name: Welding container
-    needs: job3
+    needs: job2
     runs-on: [self-hosted, server]
 
     steps:
