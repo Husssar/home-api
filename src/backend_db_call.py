@@ -9,7 +9,7 @@ def get_temperature(meter_id, medium_type):
     qry = []
 
     try:
-        cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
+        cnx = pymysql.connect(user=cred.USER_SQL, password=cred.PASSWORD_SQL, host=cred.HOST, database=cred.DATABASE)
         qry.append('SELECT temp_latest.updated, temp_latest.value, unit.name  FROM temp_latest')
         qry.append('inner join temp_linker on temp_linker.link_id = temp_latest.name_id')
         qry.append('inner join temp_linker as unit on unit.link_id = temp_latest.unit')
@@ -33,7 +33,7 @@ def get_schedule():
     qry = []
 
     try:
-        cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
+        cnx = pymysql.connect(user=cred.USER_SQL, password=cred.PASSWORD_SQL, host=cred.HOST, database=cred.DATABASE)
         qry = f"SELECT who, whereat, schedules_linker.value, timeat from schedules inner join schedules_linker on schedules.dayat = schedules_linker.valueId order by schedules_linker.valueId"
         print(qry)
         cur = cnx.cursor()
@@ -62,7 +62,7 @@ def get_electricity_price():
     print(tomorrow)
 
     try:
-        cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
+        cnx = pymysql.connect(user=cred.USER_SQL, password=cred.PASSWORD_SQL, host=cred.HOST, database=cred.DATABASE)
         qry = f"SELECT when_price, totalprice FROM `grid_cost` " \
               f"where when_price > \"{time_now}\" and when_price < \"{tomorrow}\""
 
@@ -91,7 +91,7 @@ def get_electricity_price_now():
     time_then = (now - timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S")
 
     try:
-        cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
+        cnx = pymysql.connect(user=cred.USER_SQL, password=cred.PASSWORD_SQL, host=cred.HOST, database=cred.DATABASE)
         qry = f"SELECT when_price, totalprice FROM `grid_cost` " \
               f"where when_price >= \"{time_then}\" and when_price <= \"{time_now}\""
         print(qry)
@@ -115,7 +115,7 @@ def get_electricity_consumed():
         time_then = now.strftime("%Y-%m-%d %H:%M:%S")
         time_back = (now - timedelta(days=2)).strftime("%Y-%m-%d 23:00:00")
 
-        cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
+        cnx = pymysql.connect(user=cred.USER_SQL, password=cred.PASSWORD_SQL, host=cred.HOST, database=cred.DATABASE)
 
         qry.append(f"SELECT * FROM `grid_data_consuming_latest_48h` as a inner join ( select date(created) as t_date, min(created) as t_min from grid_data_consuming_latest_48h GROUP BY date(created), hour(created) ) as t on t.t_min = a.created where created >= '{time_back}' and created < '{time_then}'")
 
@@ -144,7 +144,7 @@ def get_electricity_consuming():
     qry = []
 
     try:
-        cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
+        cnx = pymysql.connect(user=cred.USER_SQL, password=cred.PASSWORD_SQL, host=cred.HOST, database=cred.DATABASE)
 
         qry.append(f'SELECT value, effiency, obis.obis_str FROM grid_data_latest')
         qry.append(f'inner join obis on obis.obis_id = grid_data_latest.obis_id')
@@ -212,7 +212,7 @@ def get_electricity_added_power():
     qry = []
 
     try:
-        cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
+        cnx = pymysql.connect(user=cred.USER_SQL, password=cred.PASSWORD_SQL, host=cred.HOST, database=cred.DATABASE)
         qry.append(f'SELECT temp.created, value/100 from temp')
         qry.append(f'where name = (select link_id from temp_linker where name = "electrical addition power")')
         qry.append(f'and mbus= (select link_id from temp_linker where name = "kW")')
@@ -232,7 +232,7 @@ def get_radiator(in_value):
     qry = []
 
     try:
-        cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
+        cnx = pymysql.connect(user=cred.USER_SQL, password=cred.PASSWORD_SQL, host=cred.HOST, database=cred.DATABASE)
         qry.append(f'SELECT temp.created, value, u.name from temp')
         qry.append(f'inner join temp_linker as u on u.link_id = mbus')
         qry.append(f'where temp.name = (select link_id from temp_linker where name = "{in_value}")')
@@ -252,7 +252,7 @@ def get_citat():
     qry = []
 
     try:
-        cnx = pymysql.connect(user=cred.SQLUW, password=cred.USERPW, host=cred.HOST, database=cred.DATABASE)
+        cnx = pymysql.connect(user=cred.USER_SQL, password=cred.PASSWORD_SQL, host=cred.HOST, database=cred.DATABASE)
         qry.append(f'SELECT citatet from citat order by RAND() limit 1')
         q = " ".join(qry)
         print(q)
