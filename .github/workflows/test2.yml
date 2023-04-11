@@ -1,0 +1,39 @@
+name: Experiment
+on: [push]
+
+jobs:
+  job1:
+    name: Stopping containers
+    runs-on: [self-hosted, server]
+
+    steps:
+    - name: Stopping containers
+      run: |
+        docker stop home_api
+        docker rm home_api
+        docker rmi home_api
+
+  job2:
+    name: Welding container
+    needs: job1
+    runs-on: [self-hosted, server]
+
+    steps:
+    - name: Assembling parts
+      uses: actions/checkout@v3
+      env:
+        SECRET ${{secrets.HOME_API_SQL_PASSWORD}}
+    - run: ./gen_cred.sh ${{ vars.HOME_API_SQL_DB }} ${{ vars.HOME_API_SQL_USER }} ${{ vars.HOME_API_SQL_HOST }} ${{secrets.HOME_API_SQL_PASSWORD}}
+    - name: Welding... 
+      run: |
+        docker build -t home-api .
+
+  job3:
+    name: Starting container
+    needs: job2
+    runs-on: [self-hosted, server]
+
+    steps:
+    - name: calling docker
+      run: |
+        docker run -d --publish 5000:5000 --restart unless-stopped --name home_api home-api
