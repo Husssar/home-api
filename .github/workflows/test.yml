@@ -3,43 +3,38 @@ on: [push]
 
 jobs:
   job1:
-    name: Job 1
-    runs-on: ubuntu-latest
-
+    name: Stopping containers
+    runs-on: [self-hosted, server]
     steps:
-    - name: Sleep and Run
-      run: |
-        echo "Sleeping for 10"
-        sleep 10
+      - name: Stop container home-api
+      - run: docker stop home_api
+      - run: docker rm home_api
+      - run: docker rmi home_api
 
   job2:
-    name: Job 2
-    needs: job1
-    runs-on: ubuntu-latest
+    name: Welding container
+    runs-on: [self-hosted, server]
 
     steps:
-    - name: Dependant is Running
-      run: |
-        echo "Completed job 2, but triggering failure"
-  job23:
-    name: Job 23
-    needs: job1
-    runs-on: ubuntu-latest
+    - name: Checking out repo
+      uses: actions/checkout@v3
+      env:
+        SECRET: ${{secrets.HOME_API_SQL_PASSWORD}}
+    - run: ./gen_cred.sh ${{ vars.HOME_API_SQL_DB }} ${{ vars.HOME_API_SQL_USER }} ${{ vars.HOME_API_SQL_HOST }} ${{secrets.HOME_API_SQL_PASSWORD}}
+    - run docker build -t home-api .
 
-    steps:
-    - name: Dependant is Running
-      run: |
-        echo "Completed job 23, but triggering failure"
-
-
-
-      
   job3:
-    name: Job 3
+    name: Starting container
     needs: job2
-    runs-on: ubuntu-latest
-
+    runs-on: [self-hosted, server]
     steps:
-    - name: Will never run
-      run: |
-        echo "If you can read this, the experiment failed"
+    - name: Placing container
+      run: docker run -d --publish 5000:5000 --restart unless-stopped --name home_api home-api
+      
+  job4:
+    name: Testing container
+    needs: job3
+    runs-on: [self-hosted, server]
+    steps:
+    - name: Testing!
+      run: python3 src/test.py
