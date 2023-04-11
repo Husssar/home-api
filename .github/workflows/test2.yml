@@ -10,9 +10,9 @@ jobs:
     - name: Stopping containers
       run: |
         docker ps -a
-    - run docker stop home_api
-    - run docker rm home_api
-    - run docker rmi home_api
+        docker stop home_api
+        docker rm home_api
+        docker rmi home-api
 
     - name: Assembling parts
       uses: actions/checkout@v3
