@@ -1,0 +1,27 @@
+
+name: test
+on: [push]
+jobs:
+  job1:
+    run:
+      runs-on: [self-hosted, server]
+      steps:
+      - name: heck out repository code
+        run: |
+          echo job1
+  job2:
+    needs: job1
+    run:
+      runs-on: [self-hosted, server]
+      steps:
+      - name: job2
+        run: |
+          echo job2
+  job3:
+    if: ${{ always() }}
+    needs: [job1, job2]
+    steps:
+      - name: job2
+        run: |
+          echo job3
+
