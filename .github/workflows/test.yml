@@ -1,7 +1,6 @@
 name: test
 on: [push]
 jobs:
-  name: test job1
   job1:
     run:
       runs-on: [self-hosted, server]
