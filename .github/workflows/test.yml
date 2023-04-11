@@ -21,15 +21,6 @@ jobs:
     - name: Dependant is Running
       run: |
         echo "Completed job 2, but triggering failure"
-   job2_2:
-    name: Job 2_2
-    needs: job1
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Dependant is Running
-      run: |
-        echo "Completed job 2, but triggering failure"
 
   job3:
     name: Job 3
