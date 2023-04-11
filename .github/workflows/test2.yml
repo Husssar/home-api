@@ -15,7 +15,7 @@ jobs:
 
   job2:
     name: Welding container
-    needs: job1
+    #    needs: job1
     runs-on: [self-hosted, server]
 
     steps:
@@ -30,7 +30,7 @@ jobs:
 
   job3:
     name: Starting container
-    needs: job2
+    #needs: job2
     runs-on: [self-hosted, server]
 
     steps:
