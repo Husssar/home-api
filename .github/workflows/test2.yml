@@ -9,6 +9,7 @@ jobs:
     steps:
     - name: Stopping containers
       run: |
+        docker ps -a
         docker stop home_api
         docker rm home_api
         docker rmi home_api
@@ -30,7 +31,7 @@ jobs:
 
   job3:
     name: Starting container
-    #needs: job2
+    needs: job2
     runs-on: [self-hosted, server]
 
     steps:
