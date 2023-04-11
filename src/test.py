@@ -6,7 +6,6 @@ from urllib3 import Retry
 import time
 import sys
 URL = f'http://{cred.TEST_URL}'
-print(URL)
 OK = True
 NOK = False
 
@@ -41,7 +40,6 @@ def get_graph():
 def get_date():
     extended_url = f'/date/'
     response = requests.get(URL + extended_url).json()
-    print(response)
 
 def wait_for_backend():
     session = requests.Session()
@@ -55,11 +53,12 @@ def wait_for_backend():
           print("Backend up'n running, let's start!")
     except Exception as e:
         print(e)
+        stop_time = time.monotonic()
+        print(round(stop_time-start_time,2), "seconds")
         print("Backend failure, no need to start tests")
         sys.exit(1)
-    stop_time = time.monotonic()
-    print(round(stop_time-start_time,2), "seoncds")
-    print(r.status_code)
+
+
 def main():
     wait_for_backend()
     test_start()
