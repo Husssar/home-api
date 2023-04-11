@@ -16,7 +16,7 @@ jobs:
 
   job2:
     name: Welding container
-        needs: job1
+    needs: job1
     runs-on: [self-hosted, server]
 
     steps:
@@ -33,6 +33,20 @@ jobs:
     runs-on: [self-hosted, server]
 
     steps:
-    - name: calling docker
+    - name: Placing container
       run: |
         docker run -d --publish 5000:5000 --restart unless-stopped --name home_api home-api
+
+  job4:
+    name: Welding container
+    needs: job3
+    runs-on: [self-hosted, server]
+
+    steps:
+    - name: Assembling parts
+      uses: actions/checkout@v3
+    - name: Knocking on container 
+      run: |
+        python3 src/test.py
+
+ 
