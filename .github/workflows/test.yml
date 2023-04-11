@@ -9,13 +9,13 @@ jobs:
       - name: heck out repository code
       - run: |
           echo job1
-  name: test job2
-  job2:
-    needs: job1
-    run:
-      runs-on: [self-hosted, server]
-      steps:
-      - name: job2
-      - run: |
-          echo job2
+          # name: test job2
+          # job2:
+    # needs: job1
+    #run:
+      # runs-on: [self-hosted, server]
+      #steps:
+        # - name: job2
+        # - run: |
+        #          echo job2
 
