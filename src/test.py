@@ -1,11 +1,10 @@
-import cred
 import requests
 from requests.adapters import HTTPAdapter
 import urllib3
 from urllib3 import Retry
 import time
 import sys
-URL = f'http://{cred.TEST_URL}'
+URL = f'http://192.168.9.8:5000'
 OK = True
 NOK = False
 
