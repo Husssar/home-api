@@ -10,9 +10,9 @@ jobs:
     - name: Stopping containers
       run: |
         docker ps -a
-        docker stop home_api
-        docker rm home_api
-        docker rmi home_api
+        #    docker stop home_api
+        #docker rm home_api
+        #docker rmi home_api
 
   job2:
     name: Welding container
@@ -22,8 +22,6 @@ jobs:
     steps:
     - name: Assembling parts
       uses: actions/checkout@v3
-      env:
-        SECRET ${{secrets.HOME_API_SQL_PASSWORD}}
     - run: ./gen_cred.sh ${{ vars.HOME_API_SQL_DB }} ${{ vars.HOME_API_SQL_USER }} ${{ vars.HOME_API_SQL_HOST }} ${{secrets.HOME_API_SQL_PASSWORD}}
     - name: Welding... 
       run: |
