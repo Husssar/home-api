@@ -1,5 +1,4 @@
-cred>=0.1
-Flask>=2.2.3
-flask_cors>=3.0.10
-pymysql>=1.0.3
-
+Flask==2.2.3
+flask_cors==3.0.10
+PyMySQL==1.0.2
+pytz==2019.3
