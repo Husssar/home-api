@@ -1,5 +1,6 @@
 
 import cred
+import backend_method_call
 import pymysql
 from datetime import datetime, timedelta
 
@@ -27,8 +28,6 @@ def get_temperature(meter_id, medium_type):
     except Exception as e:
         print(e)
 
-def get_date():
-    now = datetime.now()
 def get_schedule():
     qry = []
 
@@ -86,9 +85,11 @@ def get_electricity_price():
 
 def get_electricity_price_now():
     qry = []
-    now = datetime.now()
-    time_now = now.strftime("%Y-%m-%d %H:%M:%S")
-    time_then = (now - timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S")
+
+    get_time = backend_method_call.date_now()
+    time_now = datetime.strptime(get_time['now_date_time'], '%Y-%m-%d %H:%M:%S')
+    time_then = time_now - timedelta(hours=1)
+
 
     try:
         cnx = pymysql.connect(user=cred.USER_SQL, password=cred.PASSWORD_SQL, host=cred.HOST, database=cred.DATABASE)
