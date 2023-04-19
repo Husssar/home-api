@@ -1,3 +1,5 @@
+echo "Running gen_cred.sh, good luck!"
+
 DB="DATABASE='$1'"
 USER="USER_SQL='$2'"
 HOST="HOST='$3'"
