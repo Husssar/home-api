@@ -6,6 +6,7 @@ from datetime import datetime
 from flask import Flask, jsonify, request, render_template
 import backend_db_call
 from flask_cors import CORS
+import pytz
 # creating a Flask app
 app = Flask(__name__)
 img = os.path.join('static', 'images')
@@ -30,7 +31,8 @@ def temperature(num, value):
 
 @app.route('/date/', methods= ['GET'])
 def get_date():
-    now = datetime.now()
+    sweden = pytz.timezone('Europe/Stockholm')
+    now = datetime.now(sweden)
 
     return {
         "now": str(now),
