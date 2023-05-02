@@ -1,7 +1,5 @@
 name: main
-on: push:
-    brnaches:
-        - main
+on: [push]
 
 jobs:
   job1:
